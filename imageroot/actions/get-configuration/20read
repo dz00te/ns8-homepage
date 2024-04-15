@@ -5,10 +5,18 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+import os
 import json
 import sys
 import agent
 
 config = {}
+
+# Read current configuration from the environment file
+config["host"] = os.getenv("TRAEFIK_HOST","")
+config["http2https"] = os.getenv("TRAEFIK_HTTP2HTTPS") == "True"
+config["lets_encrypt"] = os.getenv("TRAEFIK_LETS_ENCRYPT") == "False"
+config['domains_list'] = domains
+
 
 json.dump(config, fp=sys.stdout)
