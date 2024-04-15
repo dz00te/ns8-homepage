@@ -16,7 +16,5 @@ config = {}
 config["host"] = os.getenv("TRAEFIK_HOST","")
 config["http2https"] = os.getenv("TRAEFIK_HTTP2HTTPS") == "True"
 config["lets_encrypt"] = os.getenv("TRAEFIK_LETS_ENCRYPT") == "False"
-config['domains_list'] = domains
-
 
 json.dump(config, fp=sys.stdout)
