@@ -13,5 +13,5 @@ exec 1>&2
 
 touch smarthost.env
 
-systemctl --user enable homepage.service
+systemctl --user enable --now homepage.service
 systemctl --user restart homepage.service
