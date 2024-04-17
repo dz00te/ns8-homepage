@@ -3,17 +3,19 @@
   "description": {
     "en": "My homepage module"
   },
-  "categories": [],
+  "categories": [
+    "misc"
+  ],
   "authors": [
     {
-      "name": "Name Surname",
-      "email": "author@yourmail.org"
+      "name": "dz00te",
+      "email": "dz00te@framassa.org"
     }
   ],
   "docs": {
-    "documentation_url": "https://docs.homepage.com/",
-    "bug_url": "https://github.com/NethServer/dev",
-    "code_url": "https://github.com/author/ns8-homepage"
+    "documentation_url": "https://gethomepage.dev/latest/configs/",
+    "bug_url": "https://github.com/dz00te/ns8-homepage/issues",
+    "code_url": "https://github.com/dz00te/ns8-homepage"
   },
-  "source": "ghcr.io/nethserver/homepage"
+  "source": "ghcr.io/dz00te/homepage"
 }

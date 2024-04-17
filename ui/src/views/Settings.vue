@@ -24,8 +24,8 @@
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
             <cv-text-input
-              :label="$t('settings.hope_fqdn')"
-              placeholder="hope.example.org"
+              :label="$t('settings.homepage_fqdn')"
+              placeholder="homepage.example.org"
               v-model.trim="host"
               class="mg-bottom"
               :invalid-message="$t(error.host)"
