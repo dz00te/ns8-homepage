@@ -1,28 +1,20 @@
-<!--
-  Copyright (C) 2023 Nethesis S.r.l.
-  SPDX-License-Identifier: GPL-3.0-or-later
--->
 <template>
-  <cv-grid fullWidth>
-    <cv-row>
-      <cv-column class="page-title">
+  <div class="bx--grid bx--grid--full-width">
+    <div class="bx--row">
+      <div class="bx--col-lg-16 page-title">
         <h2>{{ $t("about.title") }}</h2>
-      </cv-column>
-    </cv-row>
-    <cv-row>
-      <cv-column>
-        <NsInlineNotification
-          v-if="error.version"
-          kind="error"
-          :title="$t('error.cannot_retrieve_installed_modules')"
-          :description="error.version"
-          :showCloseButton="false"
-        />
-      </cv-column>
-    </cv-row>
-    <cv-row>
-      <cv-column>
+      </div>
+    </div>
+    <div class="bx--row">
+      <div class="bx--col-lg-16">
         <cv-tile :light="true">
+          <NsInlineNotification
+            v-if="error.version"
+            kind="error"
+            :title="$t('error.cannot_retrieve_installed_modules')"
+            :description="error.version"
+            :showCloseButton="false"
+          />
           <cv-skeleton-text
             v-if="loading.moduleInfo"
             :paragraph="true"
@@ -64,15 +56,7 @@
             </div>
             <div class="key-value-setting">
               <span class="label">{{ core.$t("common.version") }}</span>
-              <span class="value">
-                <cv-skeleton-text
-                  v-if="loading.version"
-                  class="version-skeleton"
-                ></cv-skeleton-text>
-                <span v-else>
-                  {{ version }}
-                </span>
-              </span>
+              <span class="value">{{ version }}</span>
             </div>
             <div class="key-value-setting">
               <span class="label">{{
@@ -153,9 +137,9 @@
             </div>
           </div>
         </cv-tile>
-      </cv-column>
-    </cv-row>
-  </cv-grid>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -165,13 +149,12 @@ import {
   QueryParamService,
   TaskService,
   UtilService,
-  PageTitleService,
 } from "@nethserver/ns8-ui-lib";
 
 export default {
   name: "About",
   components: {},
-  mixins: [TaskService, QueryParamService, UtilService, PageTitleService],
+  mixins: [TaskService, QueryParamService, UtilService],
   pageTitle() {
     return this.$t("about.title") + " - " + this.appName;
   },
@@ -182,7 +165,7 @@ export default {
       },
       urlCheckInterval: null,
       app: null,
-      version: "",
+      version: "-",
       error: {
         moduleInfo: "",
         version: "",
@@ -223,21 +206,14 @@ export default {
       return this.getAppDescription(app, this.core);
     },
     getApplicationCategories(app) {
-      return this.getAppCategories(app, this.core) || "-";
+      return this.getAppCategories(app, this.core);
     },
     async listInstalledModules() {
       const taskAction = "list-installed-modules";
-      const eventId = this.getUuid();
-
-      // register to task error
-      this.core.$root.$once(
-        `${taskAction}-aborted-${eventId}`,
-        this.listInstalledModulesAborted
-      );
 
       // register to task completion
       this.core.$root.$once(
-        `${taskAction}-completed-${eventId}`,
+        taskAction + "-completed",
         this.listInstalledModulesCompleted
       );
 
@@ -245,25 +221,19 @@ export default {
         this.createClusterTaskForApp({
           action: taskAction,
           extra: {
-            title: this.$t("action." + taskAction),
+            title: this.core.$t("action." + taskAction),
             isNotificationHidden: true,
-            eventId,
           },
         })
       );
-      const err = res[0];
+      const errApps = res[0];
 
-      if (err) {
-        console.error(`error creating task ${taskAction}`, err);
-        this.error.version = this.getErrorMessage(err);
+      if (errApps) {
+        console.error("error retrieving installed apps", errApps);
+        this.error.version = this.getErrorMessage(errApps);
         this.loading.version = false;
         return;
       }
-    },
-    listInstalledModulesAborted(taskResult, taskContext) {
-      console.error(`${taskContext.action} aborted`, taskResult);
-      this.error.version = this.$t("error.generic_error");
-      this.loading.version = false;
     },
     listInstalledModulesCompleted(taskContext, taskResult) {
       let apps = [];
@@ -326,23 +296,5 @@ section {
 
 .email {
   margin-left: $spacing-02;
-}
-
-.version-skeleton {
-  display: inline-flex;
-  width: 3rem !important;
-  position: relative;
-  top: 1px;
-}
-</style>
-
-<style lang="scss">
-@import "../styles/carbon-utils";
-
-// global styles
-
-.version-skeleton .bx--skeleton__text {
-  margin-bottom: 0;
-  height: 12px;
 }
 </style>
