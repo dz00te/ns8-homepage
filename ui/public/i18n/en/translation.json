@@ -18,13 +18,27 @@
     "mount": "Mount",
     "no_services": "No services",
     "no_images": "No images",
-    "no_volumes": "No volumes"
+    "no_volumes": "No volumes",
+    "homepage_webapp": "homepage webapp",
+    "not_configured": "Not configured",
+    "open_webapp": "Open homepage",
+    "configure": "Configure"
   },
   "settings": {
     "title": "Settings",
     "configure_instance": "Configure {instance}",
     "save": "Save",
-    "test_field": "Test field"
+    "homepage_fqdn": "homepage hostname (FQDN)",
+    "lets_encrypt": "Request LE Certificate",
+    "http_to_https": "Force HTTPS",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "advanced": "Advanced",
+    "configuring": "Configuring",
+    "instance_configuration": "Configure homepage",
+    "domain_already_used_in_traefik": "Domain already used in traefik",
+    "host_pattern": "Must be a valid fully qualified domain name",
+    "host_format": "Must be a valid fully qualified domain name"
   },
   "about": {
     "title": "About"
@@ -52,6 +66,7 @@
     "403": "Operation not authorized",
     "404": "Resource not found",
     "cannot_retrieve_module_info": "Cannot retrieve module info",
-    "cannot_retrieve_installed_modules": "Cannot retrieve installed modules"
+    "cannot_retrieve_installed_modules": "Cannot retrieve installed modules",
+    "cannot_retrieve_configuration": "Cannot retrieve configuration"
   }
 }
