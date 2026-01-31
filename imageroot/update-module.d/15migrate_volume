@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#
+# Migrate from named volume to directory mount
+#
+
+set -e
+
+# Redirect to journal
+exec 1>&2
+
+OLD_VOLUME_PATH="${HOME}/.local/share/containers/storage/volumes/homepage-config/_data"
+NEW_DIR_PATH="${HOME}/.config/state/homepage-config"
+
+# Check if we need to migrate
+if [ -d "$OLD_VOLUME_PATH" ] && [ ! -d "$NEW_DIR_PATH" ]; then
+    echo "Migrating homepage-config from volume to directory..."
+    
+    # Create directory
+    mkdir -p "$NEW_DIR_PATH"
+    
+    # Copy all data
+    cp -a "$OLD_VOLUME_PATH/"* "$NEW_DIR_PATH/" 2>/dev/null || true
+    
+    echo "Migration completed. Old volume data preserved for safety."
+    echo "After verifying, you can remove it with: podman volume rm homepage-config"
+else
+    echo "No migration needed or already completed"
+fi
+
