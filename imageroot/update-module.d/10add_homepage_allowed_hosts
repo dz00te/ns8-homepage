@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#
+# Add HOMEPAGE_ALLOWED_HOSTS if missing (for upgrades from old versions)
+#
+
+set -e
+
+if ! grep -q "HOMEPAGE_ALLOWED_HOSTS" environment; then
+    if [ -n "$TRAEFIK_HOST" ]; then
+        echo "HOMEPAGE_ALLOWED_HOSTS=$TRAEFIK_HOST" >> environment
+    fi
+fi
