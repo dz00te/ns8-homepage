@@ -24,14 +24,16 @@ if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-home
     buildah from --name nodebuilder-homepage -v "${PWD}:/usr/src:Z" docker.io/library/node:lts
 fi
 
+# Create .yarnrc to force official registry
+echo 'registry "https://registry.npmjs.org/"' > ui/.yarnrc
+
 echo "Build static UI files with node..."
 buildah run \
     --workingdir=/usr/src/ui \
     --env="NODE_OPTIONS=--openssl-legacy-provider" \
     nodebuilder-homepage \
-    #sh -c "yarn install && yarn build"
-    sh -c "yarn config set registry https://registry.npmjs.org/ && yarn install && yarn build"
-
+    sh -c "yarn install && yarn build"
+    
 
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot
