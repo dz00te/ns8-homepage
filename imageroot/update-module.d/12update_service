@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#
+# Update systemd service file if it has changed
+# This is needed because systemd service files are not automatically
+# overwritten during normal updates (only during fresh install or forced update)
+#
+
+set -e
+
+# Redirect output to journal
+exec 1>&2
+
+SERVICE_NAME="homepage.service"
+NEW_SERVICE="${AGENT_INSTALL_DIR}/systemd/user/${SERVICE_NAME}"
+CURRENT_SERVICE="${HOME}/.config/systemd/user/${SERVICE_NAME}"
+
+if [ -f "$NEW_SERVICE" ]; then
+    # Check if files are different
+    if ! cmp -s "$NEW_SERVICE" "$CURRENT_SERVICE" 2>/dev/null; then
+        echo "Updating ${SERVICE_NAME}..."
+        
+        # Backup old service
+        cp -f "$CURRENT_SERVICE" "${CURRENT_SERVICE}.backup-$(date +%Y%m%d-%H%M%S)" 2>/dev/null || true
+        
+        # Copy new service
+        cp -f "$NEW_SERVICE" "$CURRENT_SERVICE"
+        
+        # Reload systemd
+        systemctl --user daemon-reload
+        
+        echo "${SERVICE_NAME} updated successfully"
+    else
+        echo "${SERVICE_NAME} is already up to date"
+    fi
+else
+    echo "Warning: ${SERVICE_NAME} not found in ${AGENT_INSTALL_DIR}"
+fi
+
