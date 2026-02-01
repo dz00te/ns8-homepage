@@ -29,6 +29,7 @@ ExecStart=/usr/bin/podman run \
     --env-file=smarthost.env \
     --volume ./homepage-config:/app/config:U,z \
     ${HOMEPAGE_IMAGE}
+ExecStartPost=/bin/bash -c 'sleep 5 && chown -R $(id -u):$(id -g) %S/state/homepage-config'
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/homepage.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/homepage.ctr-id
 PIDFile=%t/homepage.pid
