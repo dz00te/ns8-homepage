@@ -28,7 +28,7 @@ ExecStart=/usr/bin/podman run \
     --env-file=%S/state/environment \
     --env-file=smarthost.env \
     --env PUID=%U \
-    --env PGID=%G \   
+    --env PGID=%G \
     --volume ./homepage-config:/app/config:Z \
     ${HOMEPAGE_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/homepage.ctr-id -t 10
