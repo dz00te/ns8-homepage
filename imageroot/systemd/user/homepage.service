@@ -18,6 +18,8 @@ Restart=always
 ExecStartPre=/bin/rm -f %t/homepage.pid %t/homepage.ctr-id
 ExecStartPre=-runagent discover-smarthost
 ExecStartPre=/bin/mkdir -p homepage-config
+ExecStartPre=/usr/bin/podman unshare chown -R 0:0 %S/state/homepage-config
+ExecStartPre=/usr/bin/podman unshare chmod -R u+rwX %S/state/homepage-config
 ExecStart=/usr/bin/podman run \
     --detach \
     --conmon-pidfile=%t/homepage.pid \
