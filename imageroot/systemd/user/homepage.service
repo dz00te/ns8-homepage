@@ -24,6 +24,7 @@ ExecStart=/usr/bin/podman run \
     --cidfile=%t/homepage.ctr-id \
     --cgroups=no-conmon \
     --replace --name=%N \
+    --userns=keep-id \
     --publish=127.0.0.1:${TCP_PORT}:3000 \
     --env-file=%S/state/environment \
     --env-file=smarthost.env \
@@ -31,7 +32,6 @@ ExecStart=/usr/bin/podman run \
     ${HOMEPAGE_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/homepage.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/homepage.ctr-id
-ExecStopPost=/bin/bash -c 'chown -R $(id -u):$(id -g) %S/state/homepage-config 2>/dev/null || true'
 PIDFile=%t/homepage.pid
 Type=forking
 
