@@ -17,8 +17,7 @@ WorkingDirectory=%S/state
 Restart=always
 ExecStartPre=/bin/rm -f %t/homepage.pid %t/homepage.ctr-id
 ExecStartPre=-runagent discover-smarthost
-ExecStartPre=/bin/mkdir -p homepage-config
-ExecStartPre=/bin/bash -c 'echo "PUID=$(id -u)" > %S/state/puid.env; echo "PGID=$(id -g)" >> %S/state/puid.env'
+ExecStartPre=/bin/bash -c 'mkdir -p homepage-config && chown $(id -u):$(id -g) homepage-config'
 ExecStart=/usr/bin/podman run \
     --detach \
     --conmon-pidfile=%t/homepage.pid \
@@ -27,8 +26,9 @@ ExecStart=/usr/bin/podman run \
     --replace --name=%N \
     --publish=127.0.0.1:${TCP_PORT}:3000 \
     --env-file=%S/state/environment \
-    --env-file=%S/state/puid.env \
     --env-file=smarthost.env \
+    --env PUID=%U \
+    --env PGID=%G \
     --volume ./homepage-config:/app/config:Z \
     ${HOMEPAGE_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/homepage.ctr-id -t 10
