@@ -21,7 +21,7 @@ container=$(buildah from scratch)
 # Reuse existing nodebuilder-homepage container, to speed up builds
 if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-homepage; then
     echo "Pulling NodeJS runtime..."
-    buildah from --name nodebuilder-homepage -v "${PWD}:/usr/src:Z" docker.io/library/node:lts
+    buildah from --name nodebuilder-homepage -v "${PWD}:/usr/src:Z" docker.io/library/node:26.13.0-slim
 fi
 
 # Create .yarnrc to force official registry
@@ -32,7 +32,7 @@ buildah run \
     --workingdir=/usr/src/ui \
     --env="NODE_OPTIONS=--openssl-legacy-provider" \
     nodebuilder-homepage \
-    sh -c "yarn install && yarn build"
+    sh -c "npm install -g corepack && corepack enable && yarn install && yarn build"
     
 
 # Add imageroot directory to the container image
