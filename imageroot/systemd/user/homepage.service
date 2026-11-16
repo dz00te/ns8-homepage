@@ -17,7 +17,6 @@ WorkingDirectory=%S/state
 Restart=always
 ExecStartPre=/bin/rm -f %t/homepage.pid %t/homepage.ctr-id
 ExecStartPre=-runagent discover-smarthost
-#ExecStartPre=/bin/mkdir -p homepage-config
 ExecStart=/usr/bin/podman run \
     --detach \
     --conmon-pidfile=%t/homepage.pid \
@@ -25,7 +24,6 @@ ExecStart=/usr/bin/podman run \
     --cgroups=no-conmon \
     --replace --name=%N \
     --publish=127.0.0.1:${TCP_PORT}:3000 \
-    --env-file=%S/state/environment \
     --env-file=smarthost.env \
     --volume homepage-config:/app/config:Z \
     ${HOMEPAGE_IMAGE}
