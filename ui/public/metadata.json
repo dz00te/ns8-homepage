@@ -1,7 +1,8 @@
 {
   "name": "homepage",
+  "upstream_name": "Homepage 0.8.12",
   "description": {
-    "en": "My homepage module"
+    "en": "Homepage: a modern, highly customizable application dashboard"
   },
   "categories": [
     "misc"
