@@ -21,7 +21,7 @@ container=$(buildah from scratch)
 # Reuse existing nodebuilder-homepage container, to speed up builds
 if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-homepage; then
     echo "Pulling NodeJS runtime..."
-    buildah from --name nodebuilder-homepage -v "${PWD}:/usr/src:Z" docker.io/library/node:26.13.0-slim
+    buildah from --name nodebuilder-homepage -v "${PWD}:/usr/src:Z" docker.io/library/node:26.13.1-slim
 fi
 
 # Create .yarnrc to force official registry
