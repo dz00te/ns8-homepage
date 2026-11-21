@@ -2,10 +2,10 @@
   "name": "homepage",
   "upstream_name": "Homepage 0.8.12",
   "description": {
-    "en": "Homepage: a modern, highly customizable application dashboard"
+    "en": "Homepage is a modern, fully static, fast, secure fully proxied, highly customizable application dashboard."
   },
   "categories": [
-    "misc"
+    "monitoring"
   ],
   "authors": [
     {
@@ -14,7 +14,7 @@
     }
   ],
   "docs": {
-    "documentation_url": "https://gethomepage.dev/latest/configs/",
+    "documentation_url": "https://gethomepage.dev/configs/",
     "bug_url": "https://github.com/dz00te/ns8-homepage/issues",
     "code_url": "https://github.com/dz00te/ns8-homepage"
   },
