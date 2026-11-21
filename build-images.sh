@@ -14,6 +14,9 @@ images=()
 repobase="${REPOBASE:-ghcr.io/dz00te}"
 # Configure the image name
 reponame="homepage"
+# Node.js 25+ no longer ships Corepack, install it from npm
+# renovate: datasource=npm packageName=corepack
+corepack_version=0.36.0
 
 # Create a new empty container image
 container=$(buildah from scratch)
@@ -22,18 +25,15 @@ container=$(buildah from scratch)
 if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-homepage; then
     echo "Pulling NodeJS runtime..."
     buildah from --name nodebuilder-homepage -v "${PWD}:/usr/src:Z" docker.io/library/node:26.13.1-slim
+    buildah run nodebuilder-homepage sh -c "npm install -g corepack@${corepack_version} && corepack enable"
 fi
-
-# Create .yarnrc to force official registry
-echo 'registry "https://registry.npmjs.org/"' > ui/.yarnrc
 
 echo "Build static UI files with node..."
 buildah run \
     --workingdir=/usr/src/ui \
     --env="NODE_OPTIONS=--openssl-legacy-provider" \
     nodebuilder-homepage \
-    sh -c "npm install -g corepack && corepack enable && yarn install && yarn build"
-    
+    sh -c "yarn install --immutable && yarn build"
 
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot

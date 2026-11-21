@@ -20,9 +20,7 @@
         <NsInfoCard
           light
           :title="$t('status.homepage_webapp')"
-          :description="
-           this.host ? this.host : $t('status.not_configured')
-          "
+          :description="this.host ? this.host : $t('status.not_configured')"
           :icon="Wikis32"
           :loading="loading.getConfiguration"
           :isErrorShown="error.getConfiguration"
@@ -79,7 +77,6 @@
         <NsBackupCard
           :title="core.$t('backup.title')"
           :noBackupMessage="core.$t('backup.no_backup_configured')"
-          :scheduleBackupLabel="core.$t('backup.configure')"
           :goToBackupLabel="core.$t('backup.go_to_backup')"
           :repositoryLabel="core.$t('backup.repository')"
           :statusLabel="core.$t('common.status')"
@@ -92,6 +89,9 @@
           :totalFileCountLabel="core.$t('backup.total_file_count')"
           :backupDisabledLabel="core.$t('common.disabled')"
           :showMoreLabel="core.$t('common.show_more')"
+          :multipleUncertainStatusLabel="
+            core.$t('backup.some_backups_failed_or_are_pending')
+          "
           :moduleId="instanceName"
           :moduleUiName="instanceLabel"
           :repositories="backupRepositories"

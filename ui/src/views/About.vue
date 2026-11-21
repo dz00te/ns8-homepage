@@ -34,9 +34,7 @@
               <div class="app-logo">
                 <img
                   :src="
-                    app.logo
-                      ? app.logo
-                      : require('@/assets/homepage_logo.png')
+                    app.logo ? app.logo : require('@/assets/homepage_logo.png')
                   "
                   :alt="app.name + ' logo'"
                 />
